@@ -28,7 +28,7 @@ bool TINYDS1307::isrunning(void) {
   return !(ss>>7);
 }
 
-bool TINYDS1307::adjust(unsigned short year, unsigned char month, unsigned char day, unsigned char hour, unsigned char min, unsigned char sec) 
+bool TINYDS1307::adjust(unsigned short year, unsigned char month, unsigned char day, unsigned char dow, unsigned char hour, unsigned char min, unsigned char sec) 
 {
     if (year >= 2000)
         year -= 2000;
@@ -37,7 +37,7 @@ bool TINYDS1307::adjust(unsigned short year, unsigned char month, unsigned char 
     TinyWireM.send(bin2bcd(sec) | 0x80); // stop the clock
     TinyWireM.send(bin2bcd(min));
     TinyWireM.send(bin2bcd(hour));
-    TinyWireM.send(bin2bcd(0));
+    TinyWireM.send(bin2bcd(dow));
     TinyWireM.send(bin2bcd(day));
     TinyWireM.send(bin2bcd(month));
     TinyWireM.send(bin2bcd(year));
@@ -66,7 +66,7 @@ bool TINYDS1307::read()  {
   ss = bcd2bin(TinyWireM.receive() & 0x7F);
   mm = bcd2bin(TinyWireM.receive());
   hh = bcd2bin(TinyWireM.receive() & 0x3f);
-  TinyWireM.receive();
+  dw = bcd2bin(TinyWireM.receive());
   d = bcd2bin(TinyWireM.receive());
   m = bcd2bin(TinyWireM.receive());
   y = bcd2bin(TinyWireM.receive()) + 2000;

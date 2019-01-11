@@ -21,7 +21,7 @@
 class TINYDS1307 {
 public:
     static bool begin(void);
-    bool adjust(unsigned short year, unsigned char month, unsigned char day, unsigned char hour = 0, unsigned char min = 0, unsigned char sec = 0);
+    bool adjust(unsigned short year, unsigned char month, unsigned char day, unsigned char dow = 0, unsigned char hour = 0, unsigned char min = 0, unsigned char sec = 0);
     bool isrunning(void);
     bool read();
 
@@ -31,13 +31,14 @@ public:
     unsigned short year() const       { return y; }
     unsigned char month() const       { return m; }
     unsigned char day() const         { return d; }
+    unsigned char dow() const         { return dw; }
     unsigned char hour() const        { return hh; }
     unsigned char minute() const      { return mm; }
     unsigned char second() const      { return ss; }
 
     unsigned char ram[DS1307_RAM_SIZE];
 protected:
-    unsigned char m, d, hh, mm, ss;
+    unsigned char m, d, dw, hh, mm, ss;
     unsigned short y;
 };
 
